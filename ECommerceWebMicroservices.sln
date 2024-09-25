@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAuthentication", "UserAuthentication\UserAuthentication.csproj", "{17128CC5-FADB-4688-8D93-18C853B2C4AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductCatalog", "ProductCatalog\ProductCatalog.csproj", "{F891D21B-6A07-475C-BE9B-C1CD728BED82}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17128CC5-FADB-4688-8D93-18C853B2C4AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17128CC5-FADB-4688-8D93-18C853B2C4AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17128CC5-FADB-4688-8D93-18C853B2C4AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17128CC5-FADB-4688-8D93-18C853B2C4AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F891D21B-6A07-475C-BE9B-C1CD728BED82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F891D21B-6A07-475C-BE9B-C1CD728BED82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F891D21B-6A07-475C-BE9B-C1CD728BED82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F891D21B-6A07-475C-BE9B-C1CD728BED82}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {84A17038-171F-46DF-A37C-F83CA0473A2D}
+	EndGlobalSection
+EndGlobal
