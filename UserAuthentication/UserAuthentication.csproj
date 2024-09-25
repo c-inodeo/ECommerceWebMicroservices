@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\ECommerceWebMicroservices.Models\ECommerceWebMicroservices.Models.csproj" />
   </ItemGroup>
 
 </Project>
