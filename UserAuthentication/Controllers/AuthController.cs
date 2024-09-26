@@ -37,12 +37,38 @@ namespace UserAuthentication.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var result = await _signInManager.PasswordSignInAsync(login.Email, login.Password, login.RememberMe, false);
+            var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, false);
             if (result.Succeeded)
             {
                 return Ok(new { message = "Login successful" });
             }
             return Unauthorized(new { message = "Invalid username or password" });
+        }
+        [HttpPut("updateprofile")]
+        public async Task<IActionResult> UpdateProfie()
+        { 
+            throw new NotImplementedException();
+        }
+        [HttpPost("updatepassword")]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePassword updatePassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByNameAsync(updatePassword.Username);
+            if (user == null) 
+            { 
+                return NotFound(new { message = "User not found" } );
+            }
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, updatePassword.OldPassword, updatePassword.NewPassword);
+            if (changePasswordResult.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(user);
+                return Ok(new { message = "Password Changed" });
+            }
+            return BadRequest(changePasswordResult);
         }
     }
 }
