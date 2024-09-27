@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using ECommerceWebMicroservices.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Shared;
 
 namespace UserAuthentication.Controllers
 {
@@ -45,9 +46,28 @@ namespace UserAuthentication.Controllers
             return Unauthorized(new { message = "Invalid username or password" });
         }
         [HttpPut("updateprofile")]
-        public async Task<IActionResult> UpdateProfie()
-        { 
-            throw new NotImplementedException();
+        public async Task<IActionResult> UpdateProfie([FromBody] UpdateProfile userProfile)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var user = await _userManager.FindByNameAsync(userProfile.Username);
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            if (userProfile.PhoneNumber != phoneNumber)
+            {
+                var setPhoneNumber = await _userManager.SetPhoneNumberAsync(user, phoneNumber);
+                if (!setPhoneNumber.Succeeded)
+                {
+                    return BadRequest(new { message = "Unexpected error when trying to set phone number." });
+                }
+            }
+            await _signInManager.RefreshSignInAsync(user);
+            return Ok(new { message = "Your profile has been updated" });
         }
         [HttpPost("updatepassword")]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePassword updatePassword)

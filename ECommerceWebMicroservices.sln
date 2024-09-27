@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductCatalog", "ProductCatalog\ProductCatalog.csproj", "{F891D21B-6A07-475C-BE9B-C1CD728BED82}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{9BBE8F98-D12A-408B-80CB-A4ABD8DAE63A}"
+	ProjectSection(SolutionItems) = preProject
+		authentication-depl.yaml = authentication-depl.yaml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceWebMicroservices.Models", "ECommerceWebMicroservices.Models\ECommerceWebMicroservices.Models.csproj", "{371F49E3-5891-4C86-8626-37AA9375C306}"
 EndProject
