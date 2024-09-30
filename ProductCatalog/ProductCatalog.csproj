@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECommerceWebMicroservices.Models\ECommerceWebMicroservices.Models.csproj" />
+    <ProjectReference Include="..\ECommerceWebMicroservices.Services\ECommerceWebMicroservices.Services.csproj" />
+    <ProjectReference Include="..\ECommerceWebMicroservices.DataAccess\ECommerceWebMicroservices.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
