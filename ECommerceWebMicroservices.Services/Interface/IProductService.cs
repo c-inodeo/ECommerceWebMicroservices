@@ -10,5 +10,6 @@ namespace ECommerceWebMicroservices.Services.Interface
     public interface IProductService
     {
         Task<List<Product>> GetAllProducts();
+        Task DeleteProduct(int id);
     }
 }

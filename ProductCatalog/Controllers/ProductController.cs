@@ -31,5 +31,11 @@ namespace ProductCatalog.Controllers
 
             return Ok(new { data = result });
         }
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            await _productService.DeleteProduct(id.Value);
+            return Ok(new { message = "Delete Successful!" });
+        }
     }
 }

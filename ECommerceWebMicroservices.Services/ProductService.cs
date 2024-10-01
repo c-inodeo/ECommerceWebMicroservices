@@ -17,6 +17,17 @@ namespace ECommerceWebMicroservices.Services
         {
             _unitOfWork = unitOfWork;
         }
+
+        public async Task DeleteProduct(int id)
+        {
+            var prod = await _unitOfWork.Product.Get(u => u.Id == id);
+            if (prod != null) 
+            {
+                await _unitOfWork.Product.Remove(prod);
+                await _unitOfWork.Save();
+            }
+        }
+
         public async Task<List<Product>> GetAllProducts()
         {
             var allProducts = await _unitOfWork.Product.GetAll();
