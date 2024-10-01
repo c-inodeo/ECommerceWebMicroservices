@@ -16,6 +16,7 @@ namespace ECommerceWebMicroservices.DataAccess.Repository
 
         public Repository(ApplicationDbContext context) {
             _context = context;
+            dbSet = _context.Set<T>();
         }
 
         public async Task<IEnumerable<T>> GetAll(string? includeProperties = null)
@@ -29,8 +30,7 @@ namespace ECommerceWebMicroservices.DataAccess.Repository
                     query = query.Include(includeprop);
                 }
             }
-
-            return await query.ToListAsync(); 
+            return await query.ToListAsync();
         }
     }
 }

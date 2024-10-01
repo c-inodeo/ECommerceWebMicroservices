@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ECommerceWebMicroservices.DataAccess\ECommerceWebMicroservices.DataAccess.csproj" />
+    <ProjectReference Include="..\ECommerceWebMicroservices.Models\ECommerceWebMicroservices.Models.csproj" />
+  </ItemGroup>
+
 </Project>

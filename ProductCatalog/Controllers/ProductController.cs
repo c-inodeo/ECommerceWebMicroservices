@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ECommerceWebMicroservices.Models;
 using ECommerceWebMicroservices.DataAccess.Repository.IRepository;
+using ECommerceWebMicroservices.Services.Interface;
 
 namespace ProductCatalog.Controllers
 {
@@ -9,18 +10,26 @@ namespace ProductCatalog.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IProductService _productService;
 
-        public ProductController(IUnitOfWork unitOfWork)
+        public ProductController( IProductService productService)
         {
-            _unitOfWork = unitOfWork;
+            _productService = productService;
         }
         //Retrieve product information, add to cart, manage inventory
-        [HttpPost("products")]
+        [HttpGet("products")]
         public async Task<IActionResult> GetAllProducts()
-        { 
-            var allProducts = await _unitOfWork.Product.GetAll();
-            return Ok(allProducts.ToList());
+        {
+            List<Product> products = await _productService.GetAllProducts();
+            var result = products.Select(p => new
+            {
+                p.Id,
+                p.ProductName,
+                p.Description,
+                p.Price,
+            }).ToList();
+
+            return Ok(new { data = result });
         }
     }
 }
