@@ -11,7 +11,11 @@ namespace ECommerceWebMicroservices.DataAccess.Repository.IRepository
     {
         Task<IEnumerable<T>> GetAll(string? includeProperties = null);
         Task<T> Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
+        Task<T> GetById(int id);
+        Task Add(T Entity);
+        Task Update(T Entity);
         Task Remove(T Entity);
+
 
     }
 }

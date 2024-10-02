@@ -16,8 +16,8 @@ namespace ProductCatalog.Controllers
         {
             _productService = productService;
         }
-        //Retrieve product information, add to cart, manage inventory
-        [HttpGet("products")]
+        //Retrieve product information
+        [HttpGet("get-products")]
         public async Task<IActionResult> GetAllProducts()
         {
             List<Product> products = await _productService.GetAllProducts();
@@ -31,11 +31,42 @@ namespace ProductCatalog.Controllers
 
             return Ok(new { data = result });
         }
-        [HttpDelete("delete")]
+        [HttpDelete("delete-product")]
         public async Task<IActionResult> Delete(int? id)
         {
             await _productService.DeleteProduct(id.Value);
             return Ok(new { message = "Delete Successful!" });
+        }
+        [HttpPost("add-product")]
+        public async Task<IActionResult> AddProduct([FromBody] Product product)
+        {
+            if (ModelState.IsValid) 
+            {
+                await _productService.AddProduct(product);
+                return Ok(new { message = "Product added successfully" });
+            }
+            return BadRequest(new { message = "Invalid product data"});
+        }
+        [HttpPut("update-product/{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product)
+        {
+            if (id != product.Id) 
+            {
+                return BadRequest(new { message = "Id mismatch!" });
+            }
+
+            var existingProduct = await _productService.GetProductById(id);
+            if (existingProduct == null) 
+            {
+                return NotFound(new { message = "Product not found" });
+            }
+            existingProduct.ProductName = product.ProductName;
+            existingProduct.Description = product.Description;
+            existingProduct.Price = product.Price;
+
+            await _productService.UpdateProduct(existingProduct);
+
+            return Ok(new { message = "Product updated!" });
         }
     }
 }

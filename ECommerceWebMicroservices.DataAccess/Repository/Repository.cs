@@ -20,6 +20,11 @@ namespace ECommerceWebMicroservices.DataAccess.Repository
             dbSet = _context.Set<T>();
         }
 
+        public async Task Add(T entity)
+        {
+            await dbSet.AddAsync(entity);
+        }
+
         public async Task<T> Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
@@ -49,9 +54,19 @@ namespace ECommerceWebMicroservices.DataAccess.Repository
             return await query.ToListAsync();
         }
 
+        public async Task<T> GetById(int id)
+        {
+            return await dbSet.FindAsync(id);  
+        }
+
         public async Task Remove(T entity)
         {
             dbSet.Remove(entity);
+        }
+
+        public async Task Update(T entity)
+        {
+           dbSet.Update(entity);
         }
     }
 }

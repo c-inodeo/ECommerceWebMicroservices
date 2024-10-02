@@ -18,6 +18,12 @@ namespace ECommerceWebMicroservices.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task AddProduct(Product product)
+        {
+            await _unitOfWork.Product.Add(product);
+            await _unitOfWork.Save();
+        }
+
         public async Task DeleteProduct(int id)
         {
             var prod = await _unitOfWork.Product.Get(u => u.Id == id);
@@ -32,6 +38,17 @@ namespace ECommerceWebMicroservices.Services
         {
             var allProducts = await _unitOfWork.Product.GetAll();
             return allProducts.ToList();
+        }
+
+        public async Task<Product> GetProductById(int id)
+        {
+            return await _unitOfWork.Product.GetById(id);
+        }
+
+        public async Task UpdateProduct(Product product)
+        {
+            await _unitOfWork.Product.Update(product);
+            await _unitOfWork.Save();
         }
     }
 }

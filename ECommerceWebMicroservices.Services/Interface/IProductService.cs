@@ -11,5 +11,8 @@ namespace ECommerceWebMicroservices.Services.Interface
     {
         Task<List<Product>> GetAllProducts();
         Task DeleteProduct(int id);
+        Task AddProduct(Product product);
+        Task UpdateProduct(Product product);
+        Task<Product> GetProductById(int id);
     }
 }
