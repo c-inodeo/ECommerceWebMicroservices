@@ -13,11 +13,13 @@ namespace ECommerceWebMicroservices.DataAccess.Repository
         private readonly ApplicationDbContext _context;
 
         public IProductRepository Product { get; private set; }
+        public ICartRepository Cart { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
             Product = new ProductRepository(_context);
+            Cart = new CartRepository(_context);
         }
 
         public async Task Save()

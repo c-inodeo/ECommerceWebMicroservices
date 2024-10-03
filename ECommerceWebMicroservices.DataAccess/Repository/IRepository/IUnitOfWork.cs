@@ -9,6 +9,7 @@ namespace ECommerceWebMicroservices.DataAccess.Repository.IRepository
     public interface IUnitOfWork
     {
         IProductRepository Product { get; }
+        ICartRepository Cart { get; }
         Task Save();
     }
 }
