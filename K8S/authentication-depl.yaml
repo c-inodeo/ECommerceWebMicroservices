@@ -23,7 +23,7 @@ kind: Service
 metadata:
   name: user-auth-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: user-auth
   ports:
