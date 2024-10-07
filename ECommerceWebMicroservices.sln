@@ -9,13 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductCatalog", "ProductCa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerceWebMicroservices.Models", "ECommerceWebMicroservices.Models\ECommerceWebMicroservices.Models.csproj", "{371F49E3-5891-4C86-8626-37AA9375C306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceWebMicroservices.Services", "ECommerceWebMicroservices.Services\ECommerceWebMicroservices.Services.csproj", "{658936FB-E6AC-492E-B33D-CEA1CCEFC77E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerceWebMicroservices.Services", "ECommerceWebMicroservices.Services\ECommerceWebMicroservices.Services.csproj", "{658936FB-E6AC-492E-B33D-CEA1CCEFC77E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceWebMicroservices.DataAccess", "ECommerceWebMicroservices.DataAccess\ECommerceWebMicroservices.DataAccess.csproj", "{FD23703C-2F37-4525-87E9-DC499E187892}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerceWebMicroservices.DataAccess", "ECommerceWebMicroservices.DataAccess\ECommerceWebMicroservices.DataAccess.csproj", "{FD23703C-2F37-4525-87E9-DC499E187892}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CC497582-112B-4F63-8648-F51892C3CCD3}"
 	ProjectSection(SolutionItems) = preProject
 		K8S\authentication-depl.yaml = K8S\authentication-depl.yaml
+		K8S\mssql-depl.yaml = K8S\mssql-depl.yaml
+		K8S\local-pvc.yaml = K8S\local-pvc.yaml
 		K8S\product-catalog-depl.yaml = K8S\product-catalog-depl.yaml
 	EndProjectSection
 EndProject
