@@ -13,10 +13,13 @@ spec:
                 app: product-catalog
         spec:
             containers:
-            - name: product-catalog-container
+            - name: product-catalog
               image: cinodeo/productcatalog-service:latest
               ports:
               - containerPort: 8080
+              env:
+                - name: ASPNETCORE_URLS
+                  value: "http://*:8080"
 ---
 apiVersion: v1
 kind: Service
@@ -27,5 +30,7 @@ spec:
     selector:
         app: product-catalog
     ports:
-    - port: 8080
+    - name: product-catalog
+      protocol: TCP
+      port: 8080
       targetPort: 8080 

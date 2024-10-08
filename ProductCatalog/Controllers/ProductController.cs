@@ -28,7 +28,7 @@ namespace ProductCatalog.Controllers
                 p.Description,
                 p.Price,
             }).ToList();
-
+            Console.WriteLine("====>Getting the data.....");
             return Ok(new { data = result });
         }
         [HttpDelete("delete-product")]
