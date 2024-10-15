@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceWebMicroservices.Services.Interface
+namespace ProductCatalog.Services.Interface
 {
     public interface IProductService
     {

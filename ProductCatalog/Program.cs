@@ -1,20 +1,41 @@
-using ECommerceWebMicroservices.DataAccess.Repository.IRepository;
-using ECommerceWebMicroservices.DataAccess.Repository;
 using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Data;
-using ECommerceWebMicroservices.Services.Interface;
+using ProductCatalog.Repository;
+using ProductCatalog.Repository.IRepository;
+using ProductCatalog.Services;
+using ProductCatalog.Services.Interface;
 using ECommerceWebMicroservices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var configuration = builder.Configuration;
+var env = builder.Environment;
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+if (env.IsProduction())
+{
+    Console.WriteLine("===Using SQLSERVER DB===");
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(configuration.GetConnectionString("ProductCatalogConn"),
+        sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5, 
+                maxRetryDelay: TimeSpan.FromSeconds(10), 
+                errorNumbersToAdd: null 
+            );
+        }));
+}
+else
+{
+    Console.WriteLine("===Using InMem DB===");
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseInMemoryDatabase("InMem"));
+}
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -44,7 +65,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 

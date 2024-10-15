@@ -1,8 +1,7 @@
-﻿using ECommerceWebMicroservices.DataAccess.Repository.IRepository;
-using ECommerceWebMicroservices.Models.DTO;
+﻿using ECommerceWebMicroservices.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProductCatalog.Repository.IRepository;
 using System.Security.Claims;
 
 namespace ProductCatalog.Controllers

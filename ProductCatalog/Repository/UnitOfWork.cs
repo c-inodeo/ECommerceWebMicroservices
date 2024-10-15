@@ -1,4 +1,4 @@
-﻿using ECommerceWebMicroservices.DataAccess.Repository.IRepository;
+﻿using ProductCatalog.Repository.IRepository;
 using ProductCatalog.Data;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceWebMicroservices.DataAccess.Repository
+namespace ProductCatalog.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {

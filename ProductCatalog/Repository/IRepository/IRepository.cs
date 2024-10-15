@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceWebMicroservices.DataAccess.Repository.IRepository
+namespace ProductCatalog.Repository.IRepository
 {
     public interface IRepository<T> where T : class
     {

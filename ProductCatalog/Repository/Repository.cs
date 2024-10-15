@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using ECommerceWebMicroservices.DataAccess.Repository.IRepository;
+using ProductCatalog.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Data;
 
-namespace ECommerceWebMicroservices.DataAccess.Repository
+namespace ProductCatalog.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
@@ -51,6 +51,7 @@ namespace ECommerceWebMicroservices.DataAccess.Repository
                     query = query.Include(includeprop);
                 }
             }
+            Console.WriteLine("==> Trying to get all products");
             return await query.ToListAsync();
         }
 

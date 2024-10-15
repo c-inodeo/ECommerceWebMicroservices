@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ECommerceWebMicroservices.Models;
-using ECommerceWebMicroservices.DataAccess.Repository.IRepository;
-using ECommerceWebMicroservices.Services.Interface;
+using ProductCatalog.Repository.IRepository;
+using ProductCatalog.Services.Interface;
 
 namespace ProductCatalog.Controllers
 {

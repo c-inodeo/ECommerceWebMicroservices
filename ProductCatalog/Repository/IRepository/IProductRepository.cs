@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ECommerceWebMicroservices.Models;
 
-namespace ECommerceWebMicroservices.DataAccess.Repository.IRepository
+namespace ProductCatalog.Repository.IRepository
 {
     public interface IProductRepository : IRepository<Product>
     {
