@@ -37,19 +37,20 @@ namespace ProductCatalog.Controllers
             return Ok(new { message = "Delete Successful!" });
         }
         [HttpPost("add-product")]
-        public async Task<IActionResult> AddProduct([FromBody] Product product)
+        public async Task<IActionResult> AddProduct([FromBody] CreateProductDto productDto)
         {
             if (ModelState.IsValid) 
             {
+                var product = _mapper.Map<Product>(productDto);
                 await _productService.AddProduct(product);
                 return Ok(new { message = "Product added successfully" });
             }
             return BadRequest(new { message = "Invalid product data"});
         }
         [HttpPut("update-product/{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] UpdateProductDto productdto)
         {
-            if (id != product.Id) 
+            if (id != productdto.Id) 
             {
                 return BadRequest(new { message = "Id mismatch!" });
             }
@@ -59,10 +60,7 @@ namespace ProductCatalog.Controllers
             {
                 return NotFound(new { message = "Product not found" });
             }
-            existingProduct.ProductName = product.ProductName;
-            existingProduct.Description = product.Description;
-            existingProduct.Price = product.Price;
-
+            _mapper.Map(productdto, existingProduct);
             await _productService.UpdateProduct(existingProduct);
 
             return Ok(new { message = "Product updated!" });
