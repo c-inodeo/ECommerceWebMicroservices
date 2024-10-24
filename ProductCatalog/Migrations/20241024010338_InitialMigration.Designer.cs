@@ -12,8 +12,8 @@ using ProductCatalog.Data;
 namespace ProductCatalog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241015021855_UpdateDbContext")]
-    partial class UpdateDbContext
+    [Migration("20241024010338_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

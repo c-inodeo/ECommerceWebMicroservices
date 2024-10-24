@@ -12,15 +12,15 @@ using ProductCatalog.Data;
 namespace ProductCatalog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241003070050_AddCartToDb")]
-    partial class AddCartToDb
+    [Migration("20241024023247_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

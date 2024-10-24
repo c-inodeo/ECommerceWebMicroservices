@@ -15,6 +15,7 @@ spec:
             containers:
             - name: product-catalog
               image: cinodeo/productcatalog-service:latest
+              imagePullPolicy: Always
               ports:
               - containerPort: 8080
               env:

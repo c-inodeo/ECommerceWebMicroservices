@@ -34,6 +34,7 @@ namespace ProductCatalog.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             await _productService.DeleteProduct(id.Value);
+            Console.WriteLine($"====Deleted {id}");
             return Ok(new { message = "Delete Successful!" });
         }
         [HttpPost("add-product")]
