@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace UserAuthentication.Controllers
 {
@@ -29,6 +30,10 @@ namespace UserAuthentication.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Register model)
         {
+            if (model == null)
+            {
+                return BadRequest(ModelState);
+            }
             var user = new IdentityUser { UserName = model.Username, Email = model.EmailAddress };
             var result = await _userManager.CreateAsync(user, model.Password);
 

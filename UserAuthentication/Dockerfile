@@ -1,12 +1,19 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS nuget-cache
 WORKDIR /src
 
 COPY UserAuthentication/UserAuthentication.csproj ./UserAuthentication/
-RUN dotnet restore ./UserAuthentication/UserAuthentication.csproj
 
-COPY . .
+RUN dotnet restore ./UserAuthentication/UserAuthentication.csproj --disable-parallel
 
-WORKDIR /src/UserAuthentication
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY --from=nuget-cache /root/.nuget /root/.nuget
+
+COPY ../ ./
+
+RUN dotnet restore --disable-parallel --verbosity diag
+
 RUN dotnet build -c Release -o /app/build
 RUN dotnet publish -c Release -o /app/publish
 
@@ -15,6 +22,5 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "UserAuthentication.dll"]
