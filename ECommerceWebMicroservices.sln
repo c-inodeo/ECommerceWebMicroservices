@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		K8S\ocelot-deployment.yaml = K8S\ocelot-deployment.yaml
 		K8S\product-catalog-depl.yaml = K8S\product-catalog-depl.yaml
 		K8S\product-catalog-np-srv.yaml = K8S\product-catalog-np-srv.yaml
+		K8S\test-pod.yaml = K8S\test-pod.yaml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotGateway", "OcelotGateway\OcelotGateway.csproj", "{230DB448-6826-4B03-AB04-FB607A814ECB}"

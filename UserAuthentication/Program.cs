@@ -11,7 +11,16 @@ var env = builder.Environment;
 
 // Add services to the container.
 builder.Services.AddControllers();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOcelot",
+        builder =>
+        {
+            builder.AllowAnyOrigin() 
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 // Configure ApplicationDbContext with environment-specific logic.
 if (env.IsProduction())
 {
@@ -63,7 +72,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowOcelot");
+app.MapHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
