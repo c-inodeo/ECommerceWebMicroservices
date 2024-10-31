@@ -111,6 +111,13 @@ namespace UserAuthentication.Controllers
             }
             return BadRequest(changePasswordResult);
         }
+
+        [HttpGet("test")]
+        public IActionResult GetTest()
+        {
+            Console.WriteLine("====>Test endpoint hit via Ocelot Gateway!");
+            return Ok("====>Console output logged successfully");
+        }
         private string GenerateJwtToken(IdentityUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

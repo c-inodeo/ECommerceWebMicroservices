@@ -12,9 +12,22 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var env = builder.Environment;
-// Add services to the container.
 
+// Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOcelot", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
+builder.Services.AddHealthChecks();
+Console.WriteLine("==Added health Checks===");
+
 if (env.IsProduction())
 {
     Console.WriteLine("===Using SQLSERVER DB===");
@@ -23,9 +36,9 @@ if (env.IsProduction())
         sqlOptions =>
         {
             sqlOptions.EnableRetryOnFailure(
-                maxRetryCount: 5, 
-                maxRetryDelay: TimeSpan.FromSeconds(10), 
-                errorNumbersToAdd: null 
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(10),
+                errorNumbersToAdd: null
             );
         }));
 }
@@ -36,18 +49,21 @@ else
         options.UseInMemoryDatabase("InMem"));
 }
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Swagger / OpenAPI configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddHttpClient<AuthService>(client => 
+
+builder.Services.AddHttpClient<AuthService>(client =>
 {
     client.BaseAddress = new Uri("http://user-auth-service/");
 });
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options => {
+    .AddJwtBearer(options =>
+    {
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
@@ -56,6 +72,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
@@ -67,12 +84,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowOcelot");
+app.MapHealthChecks("/health");
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 PrepDb.PrepPopulation(app);
 

@@ -21,6 +21,9 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
         });
 });
+
+builder.Services.AddHealthChecks();
+
 // Configure ApplicationDbContext with environment-specific logic.
 if (env.IsProduction())
 {

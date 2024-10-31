@@ -28,6 +28,7 @@ namespace ProductCatalog.Controllers
 
             var productDtos =_mapper.Map<List<ProductDto>>(products);
             Console.WriteLine("====>Getting the data.....");
+            Console.WriteLine("====>Data Retrieved!.....");
             return Ok(new { data = productDtos });
         }
         [HttpDelete("delete-product")]

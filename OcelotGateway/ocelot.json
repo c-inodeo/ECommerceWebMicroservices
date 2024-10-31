@@ -23,6 +23,93 @@
       ],
       "UpstreamPathTemplate": "/api/auth/login",
       "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/updateprofile",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/updateprofile",
+      "UpstreamHttpMethod": [ "PUT" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/updatepassword",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/updatepassword",
+      "UpstreamHttpMethod": [ "PUT" ]
+    },
+    //-----End of Authentication Routes------
+    //-----Start of Product Routes-----------
+    {
+      "DownstreamPathTemplate": "/api/Product/get-products",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-catalog-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Product/get-products",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Product/delete-product",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-catalog-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Product/delete-product",
+      "UpstreamHttpMethod": [ "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Product/add-product",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-catalog-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Product/add-product",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Product/update-product/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-catalog-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Product/update-product/{id}",
+      "UpstreamHttpMethod": [ "PUT" ]
+    },
+    //-----End of Product Routes-----------
+    {
+      "DownstreamPathTemplate": "/api/test",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-auth-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/test",
+      "UpstreamHttpMethod": [ "GET" ]
     }
   ],
   "GlobalConfiguration": {
