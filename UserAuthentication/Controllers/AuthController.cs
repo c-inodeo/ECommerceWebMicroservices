@@ -36,7 +36,6 @@ namespace UserAuthentication.Controllers
             }
             var user = new IdentityUser { UserName = model.Username, Email = model.EmailAddress };
             var result = await _userManager.CreateAsync(user, model.Password);
-
             if (result.Succeeded) 
             {
                 return Ok(new { message = "User registered successfully" });
@@ -48,7 +47,6 @@ namespace UserAuthentication.Controllers
         public async Task<IActionResult> Login([FromBody] Login login)
         {
             var user = await _userManager.FindByNameAsync(login.Username);
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -61,8 +59,14 @@ namespace UserAuthentication.Controllers
             if (result.Succeeded)
             {
                 var token = GenerateJwtToken(user);
+                var cartRedirectUrl = $"{_config["ProductCatalog:BaseUrl"]}/api/cart";
                 Console.WriteLine($"==Token: {token}");
-                return Ok(new { message = "Login successful" });
+                return Ok(new 
+                { 
+                    message = "Login successful!",
+                    token = token,
+                    redirectUrl = cartRedirectUrl
+                });
             }
             return Unauthorized(new { message = "Invalid username or password" });
         }
@@ -115,8 +119,9 @@ namespace UserAuthentication.Controllers
         [HttpGet("test")]
         public IActionResult GetTest()
         {
+            Console.WriteLine("TEEEEEEEESSTT--2");
             Console.WriteLine("====>Test endpoint hit via Ocelot Gateway!");
-            return Ok("====>Console output logged successfully");
+            return Ok("====>TEEEEEEEESSTT--2");
         }
         private string GenerateJwtToken(IdentityUser user)
         {
