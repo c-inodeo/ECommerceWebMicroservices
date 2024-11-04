@@ -23,17 +23,23 @@ namespace ProductCatalog.Repository
             var cart = await GetCartByUserId(userId);
             if (cart == null) 
             {
-                cart = new Cart { UserId = userId };
+                cart = new Cart
+                {
+                    UserId = userId,
+                    CartItems = new List<CartItem>()
+                };
                 _context.Carts.Add(cart);
             }
             var cartItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+
             if (cartItem == null)
             {
-                cart.CartItems.Add(cartItem = new CartItem
+                cartItem = new CartItem
                 {
                     ProductId = productId,
                     Quantity = quantity
-                });
+                };
+                cart.CartItems.Add(cartItem);
             }
             else
             { 

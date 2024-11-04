@@ -99,6 +99,38 @@
       "UpstreamHttpMethod": [ "PUT" ]
     },
     //-----End of Product Routes-----------
+    //-----Routes for  Cart ---------------
+    {
+      "DownstreamPathTemplate": "/api/cart/get-cart",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-catalog-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/get-cart",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/cart/add-to-cart",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-catalog-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/add-to-cart",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    //-----End of routes for  Cart --------
     {
       "DownstreamPathTemplate": "/api/test",
       "DownstreamScheme": "http",
@@ -110,6 +142,21 @@
       ],
       "UpstreamPathTemplate": "/api/test",
       "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/cart/cart-test",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-catalog-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/cart-test",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     }
   ],
   "GlobalConfiguration": {
