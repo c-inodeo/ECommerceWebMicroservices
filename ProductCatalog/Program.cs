@@ -79,6 +79,7 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddHostedService<RabbitMQConsumer>();
 
 var app = builder.Build();
 

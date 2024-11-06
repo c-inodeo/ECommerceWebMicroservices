@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using UserAuthentication.Services;
 
 namespace UserAuthentication.Controllers
 {
@@ -19,13 +20,17 @@ namespace UserAuthentication.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _config;
+        private readonly IMessageBusClientRabbitMQProducer _producer;
+
         public AuthController(UserManager<IdentityUser> userManager, 
                               SignInManager<IdentityUser> signInManager,
-                              IConfiguration config)
+                              IConfiguration config, 
+                              IMessageBusClientRabbitMQProducer producer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
+            _producer = producer;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Register model)
@@ -61,6 +66,9 @@ namespace UserAuthentication.Controllers
                 var token = GenerateJwtToken(user);
                 var cartRedirectUrl = $"{_config["ProductCatalog:BaseUrl"]}/api/cart";
                 Console.WriteLine($"==Token: {token}");
+
+                _producer.SendMessage($"====User {user.UserName} logged in successfully at {DateTime.UtcNow}");
+
                 return Ok(new 
                 { 
                     message = "Login successful!",

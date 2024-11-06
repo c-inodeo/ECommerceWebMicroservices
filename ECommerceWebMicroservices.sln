@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		K8S\ocelot-deployment.yaml = K8S\ocelot-deployment.yaml
 		K8S\product-catalog-depl.yaml = K8S\product-catalog-depl.yaml
 		K8S\product-catalog-np-srv.yaml = K8S\product-catalog-np-srv.yaml
+		K8S\rabbitmq-depl.yaml = K8S\rabbitmq-depl.yaml
 		K8S\test-pod.yaml = K8S\test-pod.yaml
 	EndProjectSection
 EndProject

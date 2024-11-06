@@ -46,7 +46,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/auth/updatepassword",
-      "UpstreamHttpMethod": [ "PUT" ]
+      "UpstreamHttpMethod": [ "POST" ]
     },
     //-----End of Authentication Routes------
     //-----Start of Product Routes-----------
@@ -126,6 +126,36 @@
       ],
       "UpstreamPathTemplate": "/api/cart/add-to-cart",
       "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/cart/update-cart",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-catalog-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/update-cart",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/cart/delete-item/{productId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-catalog-service",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/delete-item/{productId}",
+      "UpstreamHttpMethod": [ "DELETE" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
       }
