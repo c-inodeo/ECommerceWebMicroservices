@@ -1,6 +1,9 @@
 ﻿using System.Text;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
+using ECommerceWebMicroservices.Models;
+using System.Text.Json;
+using UserNotificationMessages.Helpers;
 
 namespace UserAuthentication.Services
 {
@@ -32,12 +35,13 @@ namespace UserAuthentication.Services
             }
         }
 
-        public void SendMessage(string message)
+        public void SendMessage(UserNotifModel message)
         {
-            var body = Encoding.UTF8.GetBytes(message);
+            var jsonMessage = JsonSerializer.Serialize(message);
+            var body = Encoding.UTF8.GetBytes(jsonMessage);
             _channel.BasicPublish(
                 exchange: "trigger",
-                routingKey: "",
+                routingKey: "user_notif",
                 basicProperties: null,
                 body: body
             );

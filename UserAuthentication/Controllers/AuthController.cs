@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using ECommerceWebMicroservices.Models;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Shared;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using UserAuthentication.Services;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using UserNotificationMessages.Helpers;
 
 namespace UserAuthentication.Controllers
 {
@@ -33,7 +31,7 @@ namespace UserAuthentication.Controllers
             _producer = producer;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] Register model)
+        public async Task<IActionResult> Register([FromBody] ECommerceWebMicroservices.Models.Register model)
         {
             if (model == null)
             {
@@ -43,13 +41,14 @@ namespace UserAuthentication.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded) 
             {
+                _producer.SendMessage(new UserNotifModel { UserId = model.Username, Message = "welcome to E-commerce site!", TimeStamp = DateTime.Today });
                 return Ok(new { message = "User registered successfully" });
             }
             return BadRequest();
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] Login login)
+        public async Task<IActionResult> Login([FromBody] ECommerceWebMicroservices.Models.Login login)
         {
             var user = await _userManager.FindByNameAsync(login.Username);
             if (!ModelState.IsValid)
@@ -67,8 +66,7 @@ namespace UserAuthentication.Controllers
                 var cartRedirectUrl = $"{_config["ProductCatalog:BaseUrl"]}/api/cart";
                 Console.WriteLine($"==Token: {token}");
 
-                _producer.SendMessage($"====User {user.UserName} logged in successfully at {DateTime.UtcNow}");
-
+                _producer.SendMessage(new UserNotifModel { UserId = login.Username, Message = "Welcome back!", TimeStamp = DateTime.Today});
                 return Ok(new 
                 { 
                     message = "Login successful!",

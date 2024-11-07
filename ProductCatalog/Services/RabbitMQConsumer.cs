@@ -1,6 +1,8 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using UserNotificationMessages.Helpers;
+using System.Text.Json;
 
 namespace ProductCatalog.Services
 {
@@ -30,7 +32,7 @@ namespace ProductCatalog.Services
             _channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
 
             _queueName = _channel.QueueDeclare().QueueName;
-            _channel.QueueBind(queue: _queueName, exchange: "trigger", routingKey: "");
+            _channel.QueueBind(queue: _queueName, exchange: "trigger", routingKey: "user_notif");
 
             Console.WriteLine("===> Listening on message bus");
 
@@ -48,12 +50,12 @@ namespace ProductCatalog.Services
                 Console.WriteLine("---> Event Received!");
 
                 var body = ea.Body;
-                var notificationMessage = Encoding.UTF8.GetString(body.ToArray());
+                Console.WriteLine($"body {body}");
+                var message = Encoding.UTF8.GetString(body.ToArray());
+                Console.WriteLine($"message {message}");
+                var notificationMessage = JsonSerializer.Deserialize<UserNotifModel>(message);
 
-                Console.WriteLine($"Received message: {notificationMessage}");
-
-                //Cart something method here
-                
+                Console.WriteLine($"Notification Message: Hi {notificationMessage.UserId}, {notificationMessage.Message} you are successfully registered/loggedin at {notificationMessage.TimeStamp}");                
             };
             _channel.BasicConsume(queue: _queueName, autoAck: true, consumer);
 
