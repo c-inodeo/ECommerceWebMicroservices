@@ -1,8 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+COPY LocalNugetMicroservice /src/packages
+COPY ProductCatalog/nuget.config /src
+
 COPY ProductCatalog/ProductCatalog.csproj ./ProductCatalog/
-RUN dotnet restore ./ProductCatalog/ProductCatalog.csproj
+RUN dotnet restore ./ProductCatalog/ProductCatalog.csproj --configfile /src/nuget.config
 
 COPY . .
 
