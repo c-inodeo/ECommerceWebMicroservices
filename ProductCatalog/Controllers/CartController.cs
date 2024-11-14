@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Repository.IRepository;
+using ProductCatalog.Services.Interface;
 using System.Security.Claims;
 
 namespace ProductCatalog.Controllers
@@ -12,10 +13,13 @@ namespace ProductCatalog.Controllers
     public class CartController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICartService _cartService;
 
-        public CartController(IUnitOfWork unitOfWork)
+
+        public CartController(IUnitOfWork unitOfWork, ICartService cartService)
         {
             _unitOfWork = unitOfWork;
+            _cartService = cartService;
         }
 
         private string GetUserIdFromToken()
@@ -27,15 +31,16 @@ namespace ProductCatalog.Controllers
         {
             var userId = GetUserIdFromToken();
             var token = Request.Headers["Authorization"].ToString();
+
             Console.WriteLine($"=====UserId {userId}=====");
             Console.WriteLine("=====Getting cart items from user=====");
-            var cart = await _unitOfWork.Cart.GetCartByUserId(userId);
+
+            var cart = await _cartService.GetCartItems(userId);
             if (cart == null)
             {
                 Console.WriteLine($"====Authorization Header: {token}");
                 return NotFound(new { message = "Cart not found" });
             }
-            Console.WriteLine($"====Authorization Header: {token}");
             return Ok(cart);
         }
         [HttpPost("add-to-cart")]
@@ -44,37 +49,28 @@ namespace ProductCatalog.Controllers
             var userId = GetUserIdFromToken();
             var token = Request.Headers["Authorization"].ToString();
 
-            Console.WriteLine($"=====UserId {userId.ToString()}=====");
             Console.WriteLine("=====Adding cart items=====");
-            Console.WriteLine($"====Authorization Header: {token}");
 
-            await _unitOfWork.Cart.AddToCart(userId, cartItemDto.ProductId, cartItemDto.Quantity);
-            await _unitOfWork.Save();
+            await _cartService.AddCartItem(userId, cartItemDto);
             return Ok(new { message = "Added to cart"});
         }
         [HttpPost("update-cart")]
         public async Task<IActionResult> UpdateCart([FromBody] CartItemDto cartItemDto)
         {
             var userId = GetUserIdFromToken();
-            Console.WriteLine($"=====UserId {userId}=====");
             Console.WriteLine("=====Updating cart items=====");
             await _unitOfWork.Cart.UpdateCartItem(userId, cartItemDto.ProductId, cartItemDto.Quantity);
             await _unitOfWork.Save();
-            return Ok(new { message = "Added to cart" });
+            return Ok(new { message = "Cart Updated" });
         }
         [HttpDelete("delete-item/{productId}")]
-        public async Task<IActionResult> DeleteItem(int productId, CartItemDto cartItemDto)
+        public async Task<IActionResult> DeleteItem(int productId)
         {
             var userId = GetUserIdFromToken();
-            Console.WriteLine($"=====UserId {userId}=====");
             Console.WriteLine("=====Deleting item(s)=====");
-            if (productId == cartItemDto.ProductId)
-            {
-                await _unitOfWork.Cart.RemoveFromCart(userId, productId);
-                await _unitOfWork.Save();
-                return Ok(new { message = "Deleted item" });
-            }
-            return NotFound(new { message = "Item does not exist" });
+            await _unitOfWork.Cart.RemoveCartItemById(productId);
+            await _unitOfWork.Save();
+            return Ok(new { message = "Deleted item" });
         }
         [HttpGet("cart-test")]
         public IActionResult GetTest()

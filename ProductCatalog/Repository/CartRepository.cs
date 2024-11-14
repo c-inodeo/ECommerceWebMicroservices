@@ -7,63 +7,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace ProductCatalog.Repository
 {
-    public class CartRepository : ICartRepository
+    public class CartRepository : Repository<Cart>, ICartRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public CartRepository(ApplicationDbContext context)
+        public CartRepository(ApplicationDbContext context) :base(context)
         {
             _context =context;
-        }
-        public async Task AddToCart(string userId, int productId, int quantity)
-        {
-            var cart = await GetCartByUserId(userId);
-            if (cart == null) 
-            {
-                cart = new Cart
-                {
-                    UserId = userId,
-                    CartItems = new List<CartItem>()
-                };
-                _context.Carts.Add(cart);
-            }
-            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
-
-            if (cartItem == null)
-            {
-                cartItem = new CartItem
-                {
-                    ProductId = productId,
-                    Quantity = quantity
-                };
-                cart.CartItems.Add(cartItem);
-            }
-            else
-            { 
-                cartItem.Quantity += quantity;
-            }
-            await _context.SaveChangesAsync();
         }
 
         public async Task<Cart> GetCartByUserId(string userId)
         {
-            return await _context.Carts.Include(c => c.CartItems).FirstOrDefaultAsync(c=> c.UserId == userId);
+            return await _context.Carts
+                .Include(c => c.CartItems)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
         }
 
-        public async Task RemoveFromCart(string userId, int productId)
+        public async Task<IEnumerable<Cart>> GetAll(Expression<Func<Cart, bool>>? filter = null, string? includeProperties = null)
         {
-            var cart = await GetCartByUserId(userId);
-            var cartItem = cart?.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
-            if (cartItem == null) 
+            IQueryable<Cart> query = _context.Carts;
+
+            if (filter != null)
             {
-                cart.CartItems.Remove(cartItem);
+                query = query.Where(filter);
+            }
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task RemoveCartItemById(int cartItemId)
+        {
+            var itemToBeDeleted = await _context.CartItems.FindAsync(cartItemId);
+            if (itemToBeDeleted != null)
+            {
+                _context.CartItems.Remove(itemToBeDeleted);
                 await _context.SaveChangesAsync();
             }
         }
-
         public async Task UpdateCartItem(string userId, int productId, int quantity)
         {
             var cart = await GetCartByUserId(userId);
@@ -72,7 +64,52 @@ namespace ProductCatalog.Repository
             {
                 cartItem.Quantity = quantity; 
                 await _context.SaveChangesAsync();
+            }   
+        }
+
+
+        public async Task AddToCart(string userId, CartItem cartItem)
+        {
+            //Get user ID to add to cart items
+            var cart = await GetCartByUserId(userId) ?? 
+                new Cart
+                {
+                    UserId = userId,
+                    CartItems = new List<CartItem>()
+                };
+
+            //Check ID of ProductsID then add to CarItem ang info sa product nga ni match
+
+            var existingCartItem = cart.CartItems
+                .FirstOrDefault(c => c.ProductId == cartItem.ProductId);
+            var productPrice = await _context.Products.FindAsync(cartItem.ProductId);
+
+            if (existingCartItem != null)
+            {
+                existingCartItem.Quantity += cartItem.Quantity;
+                if (existingCartItem.Product != null)
+                {
+                    existingCartItem.Price = existingCartItem.Product.Price * existingCartItem.Quantity;
+                }
+                else 
+                {
+                    existingCartItem.Price = productPrice.Price * existingCartItem.Quantity;
+                }
             }
+            else 
+            {
+                var product = await _context.Products.FindAsync(cartItem.ProductId);
+                if (product != null) 
+                { 
+                    cartItem.Price = product.Price * cartItem.Quantity;
+                    cart.CartItems.Add(cartItem);
+                }
+            }
+            if (cart.Id == 0) 
+            { 
+                _context.Carts.Add(cart);
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }
