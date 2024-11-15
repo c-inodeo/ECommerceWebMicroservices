@@ -12,13 +12,10 @@ namespace ProductCatalog.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ICartService _cartService;
 
-
-        public CartController(IUnitOfWork unitOfWork, ICartService cartService)
+        public CartController(ICartService cartService)
         {
-            _unitOfWork = unitOfWork;
             _cartService = cartService;
         }
 
@@ -43,41 +40,31 @@ namespace ProductCatalog.Controllers
             }
             return Ok(cart);
         }
-        [HttpPost("add-to-cart")]
-        public async Task<IActionResult> AddToCart([FromBody]CartItemDto cartItemDto)
+        [HttpPost("upsert-cart")]
+        public async Task<IActionResult> Upsert([FromBody]CartItemDto cartItemDto)
         {
             var userId = GetUserIdFromToken();
             var token = Request.Headers["Authorization"].ToString();
 
             Console.WriteLine("=====Adding cart items=====");
 
-            await _cartService.AddCartItem(userId, cartItemDto);
+            await _cartService.UpsertCart(userId, cartItemDto);
             return Ok(new { message = "Added to cart"});
         }
-        [HttpPost("update-cart")]
-        public async Task<IActionResult> UpdateCart([FromBody] CartItemDto cartItemDto)
-        {
-            var userId = GetUserIdFromToken();
-            Console.WriteLine("=====Updating cart items=====");
-            await _unitOfWork.Cart.UpdateCartItem(userId, cartItemDto.ProductId, cartItemDto.Quantity);
-            await _unitOfWork.Save();
-            return Ok(new { message = "Cart Updated" });
-        }
+
         [HttpDelete("delete-item/{productId}")]
         public async Task<IActionResult> DeleteItem(int productId)
         {
             var userId = GetUserIdFromToken();
             Console.WriteLine("=====Deleting item(s)=====");
-            await _unitOfWork.Cart.RemoveCartItemById(productId);
-            await _unitOfWork.Save();
+            await _cartService.RemoveCartItem(productId, userId);
             return Ok(new { message = "Deleted item" });
         }
         [HttpGet("cart-test")]
         public IActionResult GetTest()
         {
-            Console.WriteLine("TEEEEEEEESSTT--2");
             Console.WriteLine("====>Test endpoint hit via Ocelot Gateway!");
-            return Ok("====>TEEEEEEEESSTT--2");
+            return Ok("====>Test endpoint hit via Ocelot Gateway!");
         }
     }
 }

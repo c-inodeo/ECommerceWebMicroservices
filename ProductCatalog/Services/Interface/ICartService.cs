@@ -6,7 +6,7 @@ namespace ProductCatalog.Services.Interface
     public interface ICartService
     {
         Task<List<Cart>> GetCartItems(string userId);
-        Task AddCartItem(string userId, CartItemDto cartItemDto);
-
+        Task UpsertCart(string userId, CartItemDto cartItemDto);
+        Task RemoveCartItem(int cartItemId, string userId);
     }
 }

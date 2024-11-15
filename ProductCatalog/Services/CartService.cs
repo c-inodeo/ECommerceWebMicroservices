@@ -18,7 +18,7 @@ namespace ProductCatalog.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task AddCartItem(string userId, CartItemDto cartItemDto)
+        public async Task UpsertCart(string userId, CartItemDto cartItemDto)
         {
             var cartItem = await _unitOfWork.Cart.Get(c => c.UserId == userId);
             if (cartItem == null) 
@@ -43,7 +43,7 @@ namespace ProductCatalog.Services
                     Quantity = cartItemDto.Quantity
 
                 };
-                await _unitOfWork.Cart.AddToCart(userId, newCartItems);
+                await _unitOfWork.Cart.Upsert(userId, newCartItems);
             }
             await _unitOfWork.Save();
         }
@@ -60,7 +60,21 @@ namespace ProductCatalog.Services
             }
             return cartItems.ToList();
         }
-        
 
+        public async Task RemoveCartItem(int cartItemId, string userId)
+        {
+
+            var item = await _unitOfWork.Cart.Get(c => c.UserId == userId, includeProperties: "CartItems.Product");
+            var itemToBeDeleted = item.CartItems.FirstOrDefault(ci => ci.ProductId == cartItemId);
+            if (itemToBeDeleted != null)
+            {
+                item.CartItems.Remove(itemToBeDeleted);
+                await _unitOfWork.Save();
+            }
+            else
+            {
+                 Console.WriteLine("Item does not exist!");
+            }
+        }
     }
 }

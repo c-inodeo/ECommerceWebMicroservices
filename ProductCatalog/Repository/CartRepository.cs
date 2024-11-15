@@ -26,7 +26,6 @@ namespace ProductCatalog.Repository
                 .Include(c => c.CartItems)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
         }
-
         public async Task<IEnumerable<Cart>> GetAll(Expression<Func<Cart, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<Cart> query = _context.Carts;
@@ -47,28 +46,7 @@ namespace ProductCatalog.Repository
             return await query.ToListAsync();
         }
 
-        public async Task RemoveCartItemById(int cartItemId)
-        {
-            var itemToBeDeleted = await _context.CartItems.FindAsync(cartItemId);
-            if (itemToBeDeleted != null)
-            {
-                _context.CartItems.Remove(itemToBeDeleted);
-                await _context.SaveChangesAsync();
-            }
-        }
-        public async Task UpdateCartItem(string userId, int productId, int quantity)
-        {
-            var cart = await GetCartByUserId(userId);
-            var cartItem = cart?.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
-            if (cartItem != null)
-            {
-                cartItem.Quantity = quantity; 
-                await _context.SaveChangesAsync();
-            }   
-        }
-
-
-        public async Task AddToCart(string userId, CartItem cartItem)
+        public async Task Upsert(string userId, CartItem cartItem)
         {
             //Get user ID to add to cart items
             var cart = await GetCartByUserId(userId) ?? 
