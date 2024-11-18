@@ -3,8 +3,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN dotnet restore
-RUN dotnet publish -c Release -o /out
+RUN dotnet restore ./OcelotGateway/OcelotGateway.csproj
+RUN dotnet publish ./OcelotGateway/OcelotGateway.csproj -c Release -o /out
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
