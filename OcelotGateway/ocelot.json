@@ -175,6 +175,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://ocelot-gateway:8080"
+    "BaseUrl": "http://ocelot.ecommerce.com"
   }
 }

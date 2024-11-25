@@ -23,6 +23,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddOcelot();
+builder.WebHost.UseUrls("http://*:5000");
 
 var app = builder.Build();
 
