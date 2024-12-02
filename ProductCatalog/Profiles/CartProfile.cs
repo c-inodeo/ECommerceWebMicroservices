@@ -11,6 +11,7 @@ namespace ProductCatalog.Profiles
             /*Source, Destination*/
             TypeAdapterConfig<CartItem, CartItemDto>.NewConfig()
                 .Map(dest => dest.ProductId, src => src.ProductId)
+                .Map(dest => dest.ProductName, src => src.Product.ProductName)
                 .Map(dest => dest.Quantity, src => src.Quantity)
                 .Map(dest => dest.Price, src => src.Price);
         }

@@ -57,6 +57,7 @@ namespace ProductCatalog.Services
                 foreach (var item in cart.CartItems)
                 {
                     item.Price = item.Product.Price * item.Quantity;
+                    item.Product.ProductName = item.Product.ProductName;
                 }
             }
             var cartItems = carts.SelectMany(c => c.CartItems);
