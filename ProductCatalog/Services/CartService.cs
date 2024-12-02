@@ -1,5 +1,6 @@
 ﻿using ECommerceWebMicroservices.Models;
 using ECommerceWebMicroservices.Models.DTO;
+using Mapster;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -48,17 +49,19 @@ namespace ProductCatalog.Services
             await _unitOfWork.Save();
         }
 
-        public async Task<List<Cart>> GetCartItems(string userId)
+        public async Task<List<CartItemDto>> GetCartItems(string userId)
         {
-            var cartItems = await _unitOfWork.Cart.GetAll(c => c.UserId == userId, includeProperties: "CartItems.Product");
-            foreach (var cart in cartItems)
+            var carts = await _unitOfWork.Cart.GetAll(c => c.UserId == userId, includeProperties: "CartItems.Product");
+            foreach (var cart in carts)
             {
                 foreach (var item in cart.CartItems)
                 {
                     item.Price = item.Product.Price * item.Quantity;
                 }
             }
-            return cartItems.ToList();
+            var cartItems = carts.SelectMany(c => c.CartItems);
+            var cartDto = cartItems.Adapt<List<CartItemDto>>();
+            return cartDto;
         }
 
         public async Task RemoveCartItem(int cartItemId, string userId)

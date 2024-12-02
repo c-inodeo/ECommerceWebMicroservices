@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using ProductCatalog.Profiles;
+
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var env = builder.Environment;
@@ -25,7 +27,7 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
-
+MappingFunctions.RegisterMappings();
 builder.Services.AddHealthChecks();
 Console.WriteLine("==Added health Checks===");
 
