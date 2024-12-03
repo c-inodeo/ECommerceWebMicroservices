@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotGateway", "OcelotGateway\OcelotGateway.csproj", "{230DB448-6826-4B03-AB04-FB607A814ECB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkProject", "BenchmarkProject\BenchmarkProject.csproj", "{07C341C1-238C-428E-8D78-CC59CE8D8313}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,10 @@ Global
 		{230DB448-6826-4B03-AB04-FB607A814ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{230DB448-6826-4B03-AB04-FB607A814ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{230DB448-6826-4B03-AB04-FB607A814ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07C341C1-238C-428E-8D78-CC59CE8D8313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07C341C1-238C-428E-8D78-CC59CE8D8313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07C341C1-238C-428E-8D78-CC59CE8D8313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07C341C1-238C-428E-8D78-CC59CE8D8313}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

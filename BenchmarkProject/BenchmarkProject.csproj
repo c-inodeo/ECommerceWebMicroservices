@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ECommerceWebMicroservices.Models\ECommerceWebMicroservices.Models.csproj" />
+    <ProjectReference Include="..\ECommerceWebMicroservices.Services\ECommerceWebMicroservices.Services.csproj" />
+    <ProjectReference Include="..\ProductCatalog\ProductCatalog.csproj" />
+  </ItemGroup>
+
+</Project>
